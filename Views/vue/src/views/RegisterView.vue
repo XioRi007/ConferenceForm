@@ -23,9 +23,9 @@ const store = useStore();
 
 <template>
     <div class="container my-5 text-center">
-      <div class="border shadow p-5">
-        <h1 class="mb-5">Register to the conference</h1>  
+      <div class="border shadow p-5"> 
         <Map></Map>
+        <h1 class="my-5">To participate in the conference, please fill out the form</h1> 
         <WizardComponent></WizardComponent>        
       </div>
     </div>
