@@ -7,7 +7,7 @@ const getDefaultState = () => {
             lastName: '',
             birthdate: '',
             reportSubject: '',
-            country: '',
+            country: 'Ukraine',
             phone: '+10000000000',
             email: '',
         },
