@@ -6,6 +6,6 @@
 ```sh
 cd Views/vue
 npm i
-npm run dev
+npm run build
 ```
 Then the site should be opened on your php project main page.
