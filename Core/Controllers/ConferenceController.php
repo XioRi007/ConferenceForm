@@ -72,10 +72,10 @@ class ConferenceController extends Controller
     public function ImgAction()
     {
         $filename = substr($_SERVER['REQUEST_URI'], 5);
-        $file_path = '../uploads/' . $filename;
+        $file_path = '../public/uploads/' . $filename;
 
         if (!file_exists($file_path)) {
-            $file_path = '../uploads/default.png';
+            $file_path = '../public/uploads/default.png';
         }
         header('Content-Type: ' . mime_content_type($file_path));
         readfile($file_path);
