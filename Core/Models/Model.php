@@ -108,6 +108,9 @@ class Model {
         }
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $result = $statement->execute();
+        if(!$result){
+            throw new Exception('Error updating record');
+        }
         return $result;
     }
 
