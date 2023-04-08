@@ -14,9 +14,8 @@
     const membersCount = ref(0);
 
     /**
-     * При onBeforeMount
-     * Если в localStorage хранится шаг - загружает его в state
-     * Получает из store количество участников
+     * If localStorage contains step - loads it to state
+     * Loads membersCount
      */
     onBeforeMount(async () => {
             const _step = localStorage.getItem('step');
@@ -32,8 +31,7 @@
     });
     
     /**
-     * При onUnmount
-     * Очищает state и localStorage
+     * Clears state and localStorage
      */
     onUnmounted(()=>{
         if(completed.value == true){
@@ -43,16 +41,16 @@
     })
     
     /**
-     * Шаг назад
-     * Сохраняет в localStorage обновленный Шаг
+     * Step back
+     * Saves to localStorage new step
      */
     const backClick = (e) => {
         step.value --;    
         localStorage.setItem('step', step.value);
     }
     /**
-     * Шаг вперед (если он не последний)
-     * Сохраняет в localStorage обновленный Шаг
+     * Step forward (if not the last)
+     * Saves to localStorage new step
      */
     const nextClick = (e) => {
         if(step.value != maxStep){            

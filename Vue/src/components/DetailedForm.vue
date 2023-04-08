@@ -8,7 +8,7 @@
     const id = computed(()=>store.getters['register/getId'])
 
     /**
-     * Обработчик input
+     * Input handler
      */
     const setDetailed = (e) =>{
         store.commit('register/setDetails', {
@@ -18,9 +18,8 @@
     }
     
     /**
-     * При onMounted
-     * Если в store есть id участника
-     * Загружает дополнительную информацию
+     * If store contains member's id
+     * Loads details
      */
     onMounted(async ()=>{
         try{
@@ -34,7 +33,7 @@
     });
 
     /**
-     * Обновляем участника
+     * Updating member
      * 
      */
     const submit = async() => {
@@ -59,7 +58,7 @@
         props.onNext();
     }
     /**
-     * Сохраняет картинку в store
+     * Saves image to the store
      * 
      */
     const setPhoto = (event) => {

@@ -15,8 +15,7 @@ const getters = {
 // actions
 const actions = {
     /**
-     * Загружает в state список участников
-     * 
+     * Load to the state members list
      */
     async fetchMembers({commit}){
         const _res = await fetch(`${window.location.origin}/api/members`);
@@ -26,7 +25,7 @@ const actions = {
     },
     
     /**
-     * Загружает в state количество участников
+     * Load to the state members count
      */
     async fetchMembersCount({commit}){
         const _res = await fetch(`${window.location.origin}/api/members/count`);

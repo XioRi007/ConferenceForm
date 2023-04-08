@@ -37,8 +37,7 @@ const getters = {
 // actions
 const actions = {
     /**
-     * Загружает в state персональную информацию
-     * 
+     * Loads to state personal information
      */
     async loadPersonal({commit}){
         const _res = await fetch(`${window.location.origin}/api/user/personal/${state.personal.id}`);
@@ -52,8 +51,7 @@ const actions = {
     },
 
     /**
-     * Загружает в state дополнительную информацию
-     * 
+     * Loads to state detail information
      */
     async loadDetails({commit}){
         const _res = await fetch(`${window.location.origin}/api/user/details/${state.personal.id}`);
@@ -70,8 +68,7 @@ const actions = {
     },
     
     /**
-     * Регистрирует участника на сервере
-     * 
+     * Register member
      */
     async registerParticipant(){      
         let formData = new FormData();
@@ -101,8 +98,7 @@ const actions = {
     },
 
     /**
-     * Обновляет персональную информацию
-     * 
+     * Updating member's personal info
      */
     async updateParticipant(){
         let formData = new FormData();
@@ -129,7 +125,7 @@ const actions = {
     },
     
     /**
-     * Обновляет дополнительную информацию
+     * Updating member's detail info
      * 
      */
     async updateDetails(){

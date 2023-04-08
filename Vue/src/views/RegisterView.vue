@@ -6,9 +6,7 @@ import {useStore} from 'vuex'
 const store = useStore();
 
 /**
- * При onBeforeMount
- * Если в localStorage хранится id участника - загружает его в state
- * 
+ * If localStorage contains member's id - sets it to the store
  */
  onBeforeMount(() => {
   const savedUser = localStorage.getItem('user');
