@@ -111,7 +111,7 @@ class ConferenceController extends Controller
     public function MembersCountAction()
     {
         $result = Member::count();
-        echo json_encode($result);
+        echo json_encode(['membersCount' => $result]);
     }
 
     /**
