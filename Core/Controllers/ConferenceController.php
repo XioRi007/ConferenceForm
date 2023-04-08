@@ -6,91 +6,68 @@ use Exception;
 use Core\Views\View;
 use Core\Models\Member;
 
-/**
- * Главный контроллер приложения
- * 
- * 
- */
-class ConferenceController
+class ConferenceController extends Controller
 {
     /**
-     * Действие, которое возвращает
-     * index.html
-     * 
+     * Renders the index view.
+     * @return void
      */
     public function IndexAction()
     {
         View::render();
     }
+
     /**
-     * Действие, отвечающее за регистрацию
-     * участника
-     * 
+     * Register action method
+     *
+     * @return void
      */
     public function RegisterAction()
     {
-        try{
-            // $result = Member::register($_POST);
-            $result = Member::create($_POST);
-            if($result != NULL){
-                $encrypted = $this->safeEncrypt(strval($result), $_ENV['secret_key']);
-                echo json_encode(['id'=>$encrypted]);                 
-            }else{
-                throw new Exception('Unexpected error during registration');
-            }
-        }catch(Exception $ex){
-            echo json_encode(['error' => $ex->getMessage()]);
-        }
+        $result = Member::create($_POST);
+        $encrypted = $this->safeEncrypt(strval($result), $_ENV['secret_key']);
+        echo json_encode(['id'=>$encrypted]);
     }
 
     
     /**
-     * Действие, отвечающее за обновление
-     * участника
-     * 
+     * UpdateAction method for updating member information.
+     * Checks if a file was uploaded, generates a unique file name and moves the file to the uploads directory.
+     * Updates the member record in the database.
+     * @return void
      */
     public function UpdateAction()
     {
-        try{
-            $hasFile = false;
-            // проверяем, что файл был отправлен
-            if(isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-                // создаем директорию, если ее не существует
-                if(!is_dir('uploads/')) {
-                    mkdir('uploads/');
-                }
-                // получаем имя файла и расширение
-                $filename = $_FILES['file']['name'];
-                $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-                // генерируем уникальное имя файла
-                $new_filename = uniqid().'.'.$ext;
-
-                // перемещаем файл в директорию uploads
-                $hasFile = move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/'.$new_filename); 
+        $hasFile = false;
+        // check if file was uploaded
+        if(isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+            if(!is_dir('uploads/')) {
+                mkdir('uploads/');
             }
-            $id = $this->safeDecrypt($_POST['id'], $_ENV['secret_key']);
-            unset($_POST['id']);
-            unset($_POST['file']);
-            if($hasFile){
-                $_POST['photo'] = $new_filename;
-            }
-            // $result = Member::update($_POST, $id, $hasFile ? $new_filename: NULL);
-            $result = Member::update($_POST, $id);
-            if($result){
-                echo json_encode(['ok'=>true]);                 
-            }else{
-                throw new Exception('Unexpected error during update');
-            }
-        }catch(Exception $ex){
-            echo json_encode(['error' => $ex->getMessage()]);
+            $filename = $_FILES['file']['name'];
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+            $new_filename = uniqid().'.'.$ext;
+            $hasFile = move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/'.$new_filename); 
         }
+        // decrypt and remove 'id' and 'file' keys from $_POST array
+        $id = $this->safeDecrypt($_POST['id'], $_ENV['secret_key']);
+        unset($_POST['id']);
+        unset($_POST['file']);
+
+        // add photo file name to $_POST array if a file was uploaded
+        if($hasFile){
+            $_POST['photo'] = $new_filename;
+        }
+        // update member record in database
+        Member::update($_POST, $id);
+        echo json_encode(['ok'=>true]);  
     }
 
     /**
-     * Действие, отвечающее за возврат картинки
-     * участника
+     * ImgAction action for serving images.
      * 
+     * Reads the image file from the server and sends it to the client with the correct MIME type.
+     * If the requested file does not exist, a default image is served instead.
      */
     public function ImgAction()
     {
@@ -105,71 +82,52 @@ class ConferenceController
     }
 
     /**
-     * Действие, отвечающее за возврат
-     * дополнительной ифнормации про участника
-     * 
+     * DetailsAction method to get details of a member by id
+     * @return void
      */
     public function DetailsAction()
     {
         $id = $this->getId();
-        try{
-            $result = Member::getDetails($id);
-            echo json_encode($result);
-        }catch(Exception $ex){
-            echo json_encode(['error' => $ex->getMessage()]);
-        }
+        $result = Member::getDetails($id);
+        echo json_encode($result);
     }
 
     /**
-     * Действие, которое возвращает
-     * список участников
-     * 
+     * MembersAction for getting all members' data
+     * @return void
      */
     public function MembersAction()
     {
-        try{
-            $result= Member::getMembers();
-            // $result= Member::getAll();
-            echo json_encode($result);
-        }catch(Exception $ex){
-            echo json_encode(['error' => $ex->getMessage()]);
-        }
-    }
-    /**
-     * Действие, которое возвращает
-     * количество участников
-     * 
-     */
-    public function MembersCountAction()
-    {
-        try{
-            // $result = Member::getMembersCount();
-            $result = Member::count();
-            echo json_encode($result);
-        }catch(Exception $ex){
-            echo json_encode(['error' => $ex->getMessage()]);
-        }
+        $result= Member::getMembers();
+        echo json_encode($result);
     }
 
     /**
-     * Действие, которое возвращает
-     * персональную информацию участника
-     * 
+     * MembersCountAction - Returns the count of all members in the database.
+     * This method retrieves the count of all members in the database by calling the Member::count() method and
+     * outputs the result as a JSON-encoded string.
+     * @return void
+     */
+    public function MembersCountAction()
+    {
+        $result = Member::count();
+        echo json_encode($result);
+    }
+
+    /**
+     * Displays personal information for a member with the specified ID.
+     * @return void
      */
     public function PersonalAction()
     {
         $id = $this->getId();
-        try{
-            $result = Member::getPersonal($id);
-            echo json_encode($result);
-        }catch(Exception $ex){
-            echo json_encode($ex->getMessage());
-        }
+        $result = Member::getPersonal($id);
+        echo json_encode($result);
     }
+    
     /**
-     * Достает из REQUEST_URI
-     * id участника
-     * 
+     * Returns decrypted ID from URL
+     * @return int Decrypted ID
      */
     private function getId(){
         $url = $_SERVER['REQUEST_URI'];
