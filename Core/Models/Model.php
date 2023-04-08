@@ -117,7 +117,7 @@ class Model {
     /**
      * Create a new record in the database table.
      * @param array $data An associative array containing the column values to be inserted.
-     * @return bool Returns true if the insert operation was successful, false otherwise.
+     * @return string Returns ID of the inserted entity
      * @throws Exception Throws an exception if the insert operation failed.
      */
     public static function create($data) {
@@ -149,7 +149,7 @@ class Model {
         if (!$result) {
             throw new Exception('Insert operation failed');
         }
-        return true;
+        return $pdo->lastInsertId();
     }
 
     /**
