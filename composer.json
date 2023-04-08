@@ -1,0 +1,20 @@
+{
+    "name": "barnash/conferenceform",
+    "description": "Test task",
+    "type": "app",
+    "minimum-stability": "dev",
+    "require": {
+        "vlucas/phpdotenv": "5.5.x-dev"
+    },
+    "authors": [
+    {
+        "name": "Mariia Barnash",
+        "email": "maria.barnash@gmail.com"
+    }
+    ],   
+    "autoload":{
+        "psr-4":{
+            "Core\\":"Core/"
+        }
+    }
+   }
