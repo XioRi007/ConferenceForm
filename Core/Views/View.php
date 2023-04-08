@@ -13,7 +13,7 @@ class View
      */
     public static function render()
     {
-        readfile($_SERVER['DOCUMENT_ROOT'] . '/Core/Views/vue/dist/index.html');
+        readfile($_SERVER['DOCUMENT_ROOT'] . '/Vue/dist/index.html');
     }
 }
 
