@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "build": "composer install && cd Vue &&  npm install && npm run build && cd .."
+      }
+}
