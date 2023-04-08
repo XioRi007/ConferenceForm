@@ -42,11 +42,16 @@ class Model {
 
     /**
      * Get all records from the database table.
+     * @param array $fieldsArray An optional array of field names to select in the query.
      * @return array An array of objects representing the records.
      */
-    public static function getAll() {
+    public static function getAll($fieldsArray=[]) {
         $pdo = static::getConnection();
-        $statement = $pdo->prepare("SELECT * FROM " . static::$tableName);
+        $fields = '*';
+        if(count($fieldsArray)){
+            $fields = implode(", ", $fieldsArray);
+        }
+        $statement = $pdo->prepare("SELECT $fields FROM " . static::$tableName);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_OBJ);
         return $result;
