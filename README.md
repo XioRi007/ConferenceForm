@@ -2,10 +2,11 @@
 
 ## Installation
 
-
+1. Clone repository to server domains folder. 
+2. Run:
 ```sh
 cd Views/vue
 npm i
-npm run dev
+npm run build
 ```
-Then the site should be opened on your php project main page.
+3. Then the site should be opened on your php project main page.
