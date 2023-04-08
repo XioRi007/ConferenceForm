@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-uploads/*
+uploads
 !uploads/default.png
 vendor
 node_modules
