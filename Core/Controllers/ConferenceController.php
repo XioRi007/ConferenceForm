@@ -30,7 +30,8 @@ class ConferenceController
     public function RegisterAction()
     {
         try{
-            $result = Member::register($_POST);
+            // $result = Member::register($_POST);
+            $result = Member::create($_POST);
             if($result != NULL){
                 $encrypted = $this->safeEncrypt(strval($result), $_ENV['secret_key']);
                 echo json_encode(['id'=>$encrypted]);                 
@@ -71,7 +72,11 @@ class ConferenceController
             $id = $this->safeDecrypt($_POST['id'], $_ENV['secret_key']);
             unset($_POST['id']);
             unset($_POST['file']);
-            $result = Member::update($_POST, $id, $hasFile ? $new_filename: NULL);
+            if($hasFile){
+                $_POST['photo'] = $new_filename;
+            }
+            // $result = Member::update($_POST, $id, $hasFile ? $new_filename: NULL);
+            $result = Member::update($_POST, $id);
             if($result){
                 echo json_encode(['ok'=>true]);                 
             }else{
@@ -124,6 +129,7 @@ class ConferenceController
     {
         try{
             $result= Member::getMembers();
+            // $result= Member::getAll();
             echo json_encode($result);
         }catch(Exception $ex){
             echo json_encode(['error' => $ex->getMessage()]);
@@ -137,7 +143,8 @@ class ConferenceController
     public function MembersCountAction()
     {
         try{
-            $result = Member::getMembersCount();
+            // $result = Member::getMembersCount();
+            $result = Member::count();
             echo json_encode($result);
         }catch(Exception $ex){
             echo json_encode(['error' => $ex->getMessage()]);
