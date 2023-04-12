@@ -89,12 +89,8 @@ const actions = {
         }
         else{
             console.log(res.error);
-            if(res.error.includes('1062')){                
-                throw new Error('Member with this email already exists');
-            }
-            throw new Error('Unexpected error');
-        }
-        
+            throw new Error(res.error);
+        }        
     },
 
     /**
@@ -117,10 +113,7 @@ const actions = {
         const res = await _res.json();        
         if(res.error){
             console.log(res.error);
-            if(res.error.includes('1062')){                
-                throw new Error('Member with this email already exists');
-            }
-            throw new Error('Unexpected error');
+            throw new Error(res.error);
         }
     },
     
@@ -142,10 +135,7 @@ const actions = {
         const res = await _res.json();      
         if(res.error){
             console.log(res.error);
-            if(res.error.includes('1062')){                
-                throw new Error('Member with this email already exists');
-            }
-            throw new Error('Unexpected error');
+            throw new Error(res.error);
         }
     }
 }
