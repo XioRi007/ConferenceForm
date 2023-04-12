@@ -96,12 +96,13 @@
         <div class="col-sm-9">
             <input id="photo" name="photo" class="form-control" type="file" @input="setPhoto">
         </div>
+    </div>    
+    <div class="row mb-3 text-danger text-left">
+        <p>* - Required</p>
     </div>
-    
     <div class="row mb-3 text-danger" v-if="error != ''">
         <p>{{ error }}</p>
-    </div>
-    
+    </div>    
     <div class="controls">
         <button class="btn btn-success" @click="nextClick" type="submit">
             Complete

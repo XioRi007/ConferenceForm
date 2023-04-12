@@ -78,31 +78,31 @@
 <template>
     <form @submit.prevent="nextClick">
     <div class="row mb-3">
-        <label  class="col-sm-3 col-form-label" for="firstName">First Name</label>
+        <label  class="col-sm-3 col-form-label required" for="firstName">First Name</label>
         <div class="col-sm-9">
         <input id="firstName" name="firstName" class="form-control" type="text" :value="personalForm.firstName" @input="setPersonal" required/>
         </div>
     </div>
     <div class="row mb-3">
-        <label  class="col-sm-3 col-form-label" for="last-name">Last Name</label>
+        <label  class="col-sm-3 col-form-label required" for="last-name">Last Name</label>
         <div class="col-sm-9">
         <input id="lastName" name="lastName" class="form-control" type="text" :value="personalForm.lastName" @input="setPersonal" required />
         </div>
     </div>
     <div class="row mb-3">
-        <label  class="col-sm-3 col-form-label" for="birthdate">Birthdate</label>
+        <label  class="col-sm-3 col-form-label required" for="birthdate">Birthdate</label>
         <div class="col-sm-9">
         <input id="birthdate" name="birthdate" class="form-control" :max="todayDate()" type="date" :value="personalForm.birthdate" @input="setPersonal" required />
         </div>
     </div>
     <div class="row mb-3">
-        <label  class="col-sm-3 col-form-label" for="report-subject">Report Subject</label>
+        <label  class="col-sm-3 col-form-label required" for="report-subject">Report Subject</label>
         <div class="col-sm-9">
         <input id="reportSubject" name="reportSubject" class="form-control" type="text" :value="personalForm.reportSubject" @input="setPersonal" required />
         </div>
     </div>
     <div class="row mb-3">
-        <label  class="col-sm-3 col-form-label" for="country">Country</label>
+        <label  class="col-sm-3 col-form-label required" for="country">Country</label>
         <div class="col-sm-9">
         <select class="form-select" name="country" aria-label="Default select example" :value="personalForm.country" @input="setPersonal" >
             <option v-for="country in countries" :key="country">{{ country }}</option>
@@ -111,16 +111,19 @@
     </div>
 
     <div class="row mb-3">
-        <label  class="col-sm-3 col-form-label" for="phone">Phone</label>
+        <label  class="col-sm-3 col-form-label required" for="phone">Phone</label>
         <div class="col-sm-9">
         <input id="phone" name="phone" class="form-control" v-maska :data-maska=phoneMaska :value="personalForm.phone" @input="setPersonal" required>
         </div>
     </div>
     <div class="row mb-3">
-        <label  class="col-sm-3 col-form-label" for="email">Email</label>
+        <label  class="col-sm-3 col-form-label required" for="email">Email</label>
         <div class="col-sm-9">
         <input id="email" name="email" class="form-control" type="email" :value="personalForm.email" @input="setPersonal" required />
         </div>
+    </div>
+    <div class="row mb-3 text-danger text-left">
+        <p>* - Required</p>
     </div>
     <div class="row mb-3 text-danger" v-if="error != ''">
         <p>{{ error }}</p>
@@ -136,4 +139,10 @@
 
 
 <style>
+.required:after {
+  content: "*";
+  color: red;
+  margin-left: 5px;
+}
+
 </style>
