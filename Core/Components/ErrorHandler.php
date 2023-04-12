@@ -4,9 +4,10 @@ namespace Core\Components;
 
 use PDOException;
 
-class ErrorHandler {
-
-    public static function handle(PDOException $exception) {
+class ErrorHandler
+{
+    public static function handle(PDOException $exception)
+    {
         $errorCode = $exception->getCode();
         switch ($errorCode) {
             case '23000':
@@ -21,15 +22,17 @@ class ErrorHandler {
         }
         return $errorMessage;
     }
-    
-    private static function parseDuplicateError($message) {
+
+    private static function parseDuplicateError($message)
+    {
         preg_match("/(?<=for key ')\w+\.(?<word>\w+)(?=')/", $message, $matches);
         if (count($matches) < 2) {
             return "An unexpected error occurred.";
         }
         return "User with this " . $matches[1] . " already exists. Enter another one.";
     }
-    private static function parseLengthError($message) {
+    private static function parseLengthError($message)
+    {
         preg_match("/(?<=column ')\w+(?=' at row )/", $message, $matches);
         if (count($matches) < 1) {
             return "An unexpected error occurred.";

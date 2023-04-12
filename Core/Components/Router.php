@@ -2,24 +2,27 @@
 
 namespace Core\Components;
 
-class Router {
-
+class Router
+{
     protected $routes = [];
     protected $params = [];
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $arr = require '../Core/config/routes.php';
         foreach ($arr as $key => $val) {
             $this->add($key, $val);
         }
     }
 
-    public function add($route, $params) {
+    public function add($route, $params)
+    {
         $route = '#^'.$route.'$#';
         $this->routes[$route] = $params;
     }
 
-    public function match() {
+    public function match()
+    {
         $url = trim($_SERVER['REQUEST_URI'], '/');
         foreach ($this->routes as $route => $params) {
             if (preg_match($route, $url, $matches)) {
@@ -30,7 +33,8 @@ class Router {
         return false;
     }
 
-    public function run(){
+    public function run()
+    {
         if ($this->match()) {
             $path = 'Core\Controllers\\'.ucfirst($this->params['controller']).'Controller';
             if (class_exists($path)) {
@@ -40,8 +44,7 @@ class Router {
                     $controller->$action();
                 }
             }
-        }
-        else{
+        } else {
             $file_path = $_SERVER['DOCUMENT_ROOT'] . '/Vue/dist'.$_SERVER['REQUEST_URI'];
             if (file_exists($file_path)) {
                 header('Content-Description: File Transfer');
@@ -50,10 +53,10 @@ class Router {
                 header('Cache-Control: must-revalidate');
                 header('Pragma: public');
                 header('Content-Length: ' . filesize($file_path));
-                
+
                 $ext = pathinfo($file_path, PATHINFO_EXTENSION);
                 $type = 'application/octet-stream';
-                switch($ext){
+                switch($ext) {
                     case 'js':
                         $type = 'application/javascript';
                         break;
@@ -72,7 +75,7 @@ class Router {
                 readfile($file_path);
                 exit;
             } else {
-                readfile( $_SERVER['DOCUMENT_ROOT'] . '../Vue/dist/index.html');
+                readfile($_SERVER['DOCUMENT_ROOT'] . '../Vue/dist/index.html');
             }
         }
     }

@@ -1,15 +1,18 @@
 <?php
+
 namespace Core\Models;
 
 use Exception;
 use PDO;
-class Model {
 
+class Model
+{
     /**
      * Get a PDO database connection instance.
      * @return PDO Returns a PDO database connection instance.
      */
-    protected static function getConnection() {
+    protected static function getConnection()
+    {
         return new PDO(
             "mysql:host={$_ENV['host']};dbname={$_ENV['dbname']}",
             $_ENV['username'],
@@ -24,10 +27,11 @@ class Model {
      * @return object The retrieved record as an object.
      * @throws Exception If the record with the given ID is not found in the table.
      */
-    public static function findById($id, $fieldsArray=[]) {
+    public static function findById($id, $fieldsArray=[])
+    {
         $pdo = static::getConnection();
         $fields = '*';
-        if(count($fieldsArray)){
+        if(count($fieldsArray)) {
             $fields = implode(", ", $fieldsArray);
         }
         $statement = $pdo->prepare("SELECT $fields FROM " . static::$tableName . " WHERE id=:id");
@@ -45,10 +49,11 @@ class Model {
      * @param array $fieldsArray An optional array of field names to select in the query.
      * @return array An array of objects representing the records.
      */
-    public static function getAll($fieldsArray=[]) {
+    public static function getAll($fieldsArray=[])
+    {
         $pdo = static::getConnection();
         $fields = '*';
-        if(count($fieldsArray)){
+        if(count($fieldsArray)) {
             $fields = implode(", ", $fieldsArray);
         }
         $statement = $pdo->prepare("SELECT $fields FROM " . static::$tableName);
@@ -59,12 +64,13 @@ class Model {
 
     /**
      * Deletes a record from the database by ID.
-     * 
+     *
      * @param int $id The ID of the record to be deleted.
      * @return bool Returns true if the deletion was successful, false otherwise.
      * @throws Exception If the record does not exist or an error occurs while deleting the record.
      */
-    public static function delete($id) {
+    public static function delete($id)
+    {
         $pdo = static::getConnection();
         $statement = $pdo->prepare("DELETE FROM " . static::$tableName . " WHERE id=:id");
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
@@ -86,7 +92,8 @@ class Model {
      * @return bool Returns true on success, false otherwise.
      * @throws Exception Throws an exception if the record is not found.
      */
-    public static function update($data, $id) {
+    public static function update($data, $id)
+    {
         $pdo = static::getConnection();
         $sql = "UPDATE " . static::$tableName . " SET";
         foreach ($data as $key => $value) {
@@ -108,7 +115,7 @@ class Model {
         }
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $result = $statement->execute();
-        if(!$result){
+        if(!$result) {
             throw new Exception('Error updating record');
         }
         return $result;
@@ -120,7 +127,8 @@ class Model {
      * @return string Returns ID of the inserted entity
      * @throws Exception Throws an exception if the insert operation failed.
      */
-    public static function create($data) {
+    public static function create($data)
+    {
         $pdo = static::getConnection();
         $sql = "INSERT INTO " . static::$tableName . " (";
         foreach ($data as $key => $value) {
@@ -158,7 +166,8 @@ class Model {
      * @return int The number of records.
      * @throws Exception If an error occurs while executing the query.
      */
-    public static function count() {
+    public static function count()
+    {
         $pdo = static::getConnection();
         $statement = $pdo->prepare("SELECT COUNT(*) FROM " . static::$tableName);
         $statement->execute();

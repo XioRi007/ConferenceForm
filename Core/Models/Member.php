@@ -13,16 +13,16 @@ class Member extends Model
      */
     public static function getPersonal($id)
     {
-        $result = parent::findById($id, array('first_name as firstName', 
-                                              'last_name as lastName', 
-                                              'birthdate', 
+        $result = parent::findById($id, array('first_name as firstName',
+                                              'last_name as lastName',
+                                              'birthdate',
                                               'report_subject as reportSubject',
-                                              'country', 
-                                              'phone', 
+                                              'country',
+                                              'phone',
                                               'email'));
         return $result;
     }
-    
+
     /**
      * Returns the details of a record with the given ID.
      * @param int $id The ID of the record.
@@ -30,9 +30,9 @@ class Member extends Model
      */
     public static function getDetails($id)
     {
-        $result = parent::findById($id, array('company',  
-                                              'position', 
-                                              'about', 
+        $result = parent::findById($id, array('company',
+                                              'position',
+                                              'about',
                                               'photo'));
         return $result;
     }
@@ -43,19 +43,17 @@ class Member extends Model
      */
     public static function getMembers()
     {
-        $result = parent::getAll(array( 'email', 
-                                        'report_subject as reportSubject', 
-                                        'CONCAT(first_name, \' \', last_name) AS fullName', 
-                                        'photo'));        
+        $result = parent::getAll(array( 'email',
+                                        'report_subject as reportSubject',
+                                        'CONCAT(first_name, \' \', last_name) AS fullName',
+                                        'photo'));
         foreach ($result as $value) {
-            if($value->photo != NULL){
+            if($value->photo != null) {
                 $value->photo = $_ENV['img_base_url'].$value->photo;
-            }
-            else{
+            } else {
                 $value->photo = $_ENV['img_base_url'].'default.png';
             }
         }
         return $result;
     }
 }
-
