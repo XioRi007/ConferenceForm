@@ -12,7 +12,7 @@ class ConferenceController extends Controller
      * Renders the index view.
      * @return void
      */
-    public function IndexAction()
+    public function index()
     {
         View::render();
     }
@@ -22,7 +22,7 @@ class ConferenceController extends Controller
      *
      * @return void
      */
-    public function RegisterAction()
+    public function register()
     {
         $result = Member::create($_POST);
         $encrypted = $this->safeEncrypt(strval($result), $_ENV['secret_key']);
@@ -36,7 +36,7 @@ class ConferenceController extends Controller
      * Updates the member record in the database.
      * @return void
      */
-    public function UpdateAction()
+    public function update()
     {
         $hasFile = false;
         // check if file was uploaded
@@ -69,7 +69,7 @@ class ConferenceController extends Controller
      * Reads the image file from the server and sends it to the client with the correct MIME type.
      * If the requested file does not exist, a default image is served instead.
      */
-    public function ImgAction()
+    public function img()
     {
         $filename = substr($_SERVER['REQUEST_URI'], 5);
         $file_path = '../public/uploads/' . $filename;
@@ -85,7 +85,7 @@ class ConferenceController extends Controller
      * DetailsAction method to get details of a member by id
      * @return void
      */
-    public function DetailsAction()
+    public function details()
     {
         $id = $this->getId();
         $result = Member::getDetails($id);
@@ -96,7 +96,7 @@ class ConferenceController extends Controller
      * MembersAction for getting all members' data
      * @return void
      */
-    public function MembersAction()
+    public function members()
     {
         $result= Member::getMembers();
         echo json_encode($result);
@@ -108,7 +108,7 @@ class ConferenceController extends Controller
      * outputs the result as a JSON-encoded string.
      * @return void
      */
-    public function MembersCountAction()
+    public function membersCount()
     {
         $result = Member::count();
         echo json_encode(['membersCount' => $result]);
@@ -118,7 +118,7 @@ class ConferenceController extends Controller
      * Displays personal information for a member with the specified ID.
      * @return void
      */
-    public function PersonalAction()
+    public function personal()
     {
         $id = $this->getId();
         $result = Member::getPersonal($id);
