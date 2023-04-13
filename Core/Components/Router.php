@@ -45,7 +45,7 @@ class Router
                 }
             }
         } else {
-            $file_path = $_SERVER['DOCUMENT_ROOT'] . '/Vue/dist'.$_SERVER['REQUEST_URI'];
+            $file_path = $_SERVER['DOCUMENT_ROOT'] . '/../Vue/dist'.$_SERVER['REQUEST_URI'];
             if (file_exists($file_path)) {
                 header('Content-Description: File Transfer');
                 header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
