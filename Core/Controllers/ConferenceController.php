@@ -24,9 +24,10 @@ class ConferenceController extends Controller
      */
     public function register()
     {
-        $result = Member::create($_POST);
-        $encrypted = $this->safeEncrypt(strval($result), $_ENV['secret_key']);
-        echo json_encode(['id'=>$encrypted]);
+        $member = new Member();
+        $member->create($_POST);
+        $encryptedId = $this->safeEncrypt(strval($member->id), $_ENV['secret_key']);
+        echo json_encode(['id'=>$encryptedId]);
     }
 
 
@@ -59,7 +60,7 @@ class ConferenceController extends Controller
             $_POST['photo'] = $new_filename;
         }
         // update member record in database
-        Member::update($_POST, $id);
+        (new Member())->update($_POST, $id);
         echo json_encode(['ok'=>true]);
     }
 
@@ -87,9 +88,14 @@ class ConferenceController extends Controller
      */
     public function details()
     {
+        $fields = array('company',
+                        'position',
+                        'about',
+                        'photo');
         $id = $this->getId();
-        $result = Member::getDetails($id);
-        echo json_encode($result);
+        $member = new Member();
+        $member->findById($id, $fields);
+        echo json_encode($member->getAttributesByNames($fields));
     }
 
     /**
@@ -98,13 +104,18 @@ class ConferenceController extends Controller
      */
     public function members()
     {
-        $result= Member::getMembers();
+        $fields = array('email',
+                        'report_subject as reportSubject',
+                        'first_name as firstName',
+                        'last_name as lastName',
+                        'photo');
+        $result= Member::getAll($fields);
         echo json_encode($result);
     }
 
     /**
      * MembersCountAction - Returns the count of all members in the database.
-     * This method retrieves the count of all members in the database by calling the Member::count() method and
+     * This method retrieves the count of all members in the database by calling the (new Member())->count() method and
      * outputs the result as a JSON-encoded string.
      * @return void
      */
@@ -121,8 +132,22 @@ class ConferenceController extends Controller
     public function personal()
     {
         $id = $this->getId();
-        $result = Member::getPersonal($id);
-        echo json_encode($result);
+        $member = new Member();
+        $fields = array('first_name as firstName',
+                        'last_name as lastName',
+                        'birthdate',
+                        'report_subject as reportSubject',
+                        'country',
+                        'phone',
+                        'email');
+        $member->findById($id, $fields);
+        echo json_encode($member->getAttributesByNames(array('firstName',
+                                                            'lastName',
+                                                            'birthdate',
+                                                            'reportSubject',
+                                                            'country',
+                                                            'phone',
+                                                            'email')));
     }
 
     /**
