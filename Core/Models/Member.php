@@ -14,6 +14,10 @@ class Member extends Model
     public $phone;
     public $email;
     public $fullName;
+    public $photo;
+    public $about;
+    public $company;
+    public $position;
 
     /**
      * Returns an array of all members with their email, report subject, full name, and photo (if available).
