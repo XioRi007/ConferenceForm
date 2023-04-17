@@ -51,7 +51,8 @@ class Model
         }
 
         foreach ($result as $name => $value) {
-            $this->$name = $value;
+            $attr = static::snakeToCamelCase($name);
+            $this->$attr = $value;
         }
     }
 
@@ -77,8 +78,10 @@ class Model
             $model = new static();
 
             foreach ($member as $key => $value) {
-                $model->$key = $value;
+                $attr = static::snakeToCamelCase($key);
+                $model->$attr = $value;
             }
+
 
             $members[] = $model;
         }
@@ -176,7 +179,8 @@ class Model
             throw new Exception('Insert operation failed');
         }
         foreach ($data as $name => $value) {
-            $this->$name = $value;
+            $attr = static::snakeToCamelCase($name);
+            $this->$attr = $value;
         }
         $this->id=$this->pdo->lastInsertId();
     }
@@ -213,4 +217,20 @@ class Model
         }
         return $attributes;
     }
+
+    /**
+     * Convert a string from snake_case to camelCase.
+     * @param string $str The string to convert.
+     * @param bool $capitalizeFirstChar Whether to capitalize the first character of the result.
+     * @return string The converted string.
+     */
+    protected static function snakeToCamelCase($str, $capitalizeFirstChar = false)
+    {
+        $result = str_replace('_', '', ucwords($str, '_'));
+        if (!$capitalizeFirstChar) {
+            $result = lcfirst($result);
+        }
+        return $result;
+    }
+
 }
