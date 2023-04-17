@@ -51,6 +51,11 @@
                 error.value = "Enter valid phone number";
                 return;
             }  
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(personalForm.email)) {
+                error.value = "Enter valid email";
+                return;
+            }
 
             const userId = localStorage.getItem('user');           
             if(userId!== null){
