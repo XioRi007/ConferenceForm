@@ -25,11 +25,15 @@ class ErrorHandler
 
     private static function parseDuplicateError($message)
     {
-        preg_match("/(?<=for key ')\w+\.(?<word>\w+)(?=')/", $message, $matches);
-        if (count($matches) < 2) {
+        preg_match("/(?<=key ')[^']+(?=')/", $message, $matches);
+        if (count($matches) < 1) {
             return "An unexpected error occurred.";
         }
-        return "User with this " . $matches[1] . " already exists. Enter another one.";
+        $field = $matches[0];
+        if (strpos($field, '.') !== false) {
+            $field = substr($field, strpos($field, '.') + 1);
+        }
+        return "User with this " . $field . " already exists. Enter another one.";
     }
     private static function parseLengthError($message)
     {
