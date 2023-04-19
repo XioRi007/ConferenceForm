@@ -19,11 +19,13 @@ class Controller
      */
     public function handleException($e)
     {
+        http_response_code(500);
         $msg = $e->getMessage();
         if($e instanceof PDOException) {
             $msg = ErrorHandler::handle($e);
+            echo json_encode(['error' => true, 'validation' => $msg]);
+        } else {
+            echo json_encode(['error' => $msg]);
         }
-        http_response_code(500);
-        echo json_encode(['error' => $msg]);
     }
 }

@@ -11,16 +11,16 @@ class ErrorHandler
         $errorCode = $exception->getCode();
         switch ($errorCode) {
             case '23000':
-                $errorMessage = self::parseDuplicateError($exception->getMessage());
+                $errorObject = self::parseDuplicateError($exception->getMessage());
                 break;
             case '22001':
-                $errorMessage = self::parseLengthError($exception->getMessage());
+                $errorObject = self::parseLengthError($exception->getMessage());
                 break;
             default:
-                $errorMessage = $exception->getMessage();
+                $errorObject = $exception->getMessage();
                 break;
         }
-        return $errorMessage;
+        return $errorObject;
     }
 
     private static function parseDuplicateError($message)
@@ -33,7 +33,7 @@ class ErrorHandler
         if (strpos($field, '.') !== false) {
             $field = substr($field, strpos($field, '.') + 1);
         }
-        return "User with this " . $field . " already exists. Enter another one.";
+        return ['field' => $field, 'message' => "User with this " . $field . " already exists. Enter another one."];
     }
     private static function parseLengthError($message)
     {
@@ -41,6 +41,6 @@ class ErrorHandler
         if (count($matches) < 1) {
             return "An unexpected error occurred.";
         }
-        return "Data too long for the " . $matches[0] . " field. Enter another one.";
+        return ['field' => $matches[0], 'message' => "Data too long for the " . $matches[0] . " field. Enter another one."];
     }
 }
