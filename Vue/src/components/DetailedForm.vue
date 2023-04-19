@@ -75,13 +75,13 @@
     <div class="row mb-3">
         <label  class="col-sm-3 col-form-label" for="company">Company</label>
         <div class="col-sm-9">
-            <input id="company" name="company" class="form-control" type="text" v-model="detailedForm.company" @input="setDetailed"/>
+            <input id="company" name="company" maxlength="50" class="form-control" type="text" v-model="detailedForm.company" @input="setDetailed"/>
         </div>
     </div>
     <div class="row mb-3">
         <label  class="col-sm-3 col-form-label" for="position">Position</label>
         <div class="col-sm-9">
-            <input id="position" name="position" class="form-control" type="text" v-model="detailedForm.position" @input="setDetailed"/>
+            <input id="position" name="position" maxlength="50" class="form-control" type="text" v-model="detailedForm.position" @input="setDetailed"/>
         </div>
     </div>
     <div class="row mb-3">

@@ -88,7 +88,10 @@ const actions = {
             state.personal.id = res.id;
         }
         else{
-            console.log(res.error);
+            console.log(res);
+            if(res.validation){
+                throw res.validation;
+            }
             throw new Error(res.error);
         }        
     },
@@ -112,7 +115,10 @@ const actions = {
         });
         const res = await _res.json();        
         if(res.error){
-            console.log(res.error);
+            console.log(res);
+            if(res.validation){
+                throw res.validation;
+            }
             throw new Error(res.error);
         }
     },
